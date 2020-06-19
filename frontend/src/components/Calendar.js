@@ -15,6 +15,7 @@ const Calendario = (props) => {
         startAccessor="start"
         endAccessor="end"
         style={{ height: 500 }}
+        messages={{next: "Siguiente", previous: "Anterior", today: "Hoy", month: "Mensual", week: "Semanal"}}
       />
     </div>
   );
