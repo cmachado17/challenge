@@ -29,11 +29,11 @@ const Calendario = () => {
   useEffect(() => {
     const cargarEventos = async () => {
       try {
-        const respuesta = await fetch("http://localhost:5000/");
+        const respuesta = await fetch("http://localhost:5000/get-events");
         const events = await respuesta.json();
         setEventos(events);
       } catch (e) {
-        alert(e);
+        alert('asd');
       }
     };
     cargarEventos();
