@@ -8,8 +8,24 @@ import ModalEvento from './ModalEvento';
 const localizer = momentLocalizer(moment);
 
 const Calendario = () => {
+
+  //Estado eventos
   const [eventos, setEventos] = useState([]);
 
+  //Estados Modal
+  const [mostrarModal, setMostrarModal] = useState(false);
+
+//Mostrar Modal
+  const handleMostrarModal = (e) =>{
+    setMostrarModal(true)
+  }
+  //Ocultar Modal
+  const handleOcultarModal = (e) => {
+    setMostrarModal(false);
+  }
+
+
+  //Peticion para la carga de eventos
   useEffect(() => {
     const cargarEventos = async () => {
       try {
@@ -25,10 +41,11 @@ const Calendario = () => {
 
   return (
     <div className="container">
-      <Button>Nuevo evento</Button>
+      <Button onClick={handleMostrarModal}>Nuevo evento</Button>
       <Calendar
         views={["month", "week"]}
         localizer={localizer}
+        //pasar las fechas a objeto Date para formato necesario de react-big-calendar
         events={eventos.map((evento) => ({
           title: evento.title,
           start: moment(evento.start).toDate(),
@@ -45,7 +62,7 @@ const Calendario = () => {
           week: "Semanal",
         }}
       />
-    <ModalEvento show={false}/>
+    <ModalEvento show={mostrarModal} handleOcultarModal={handleOcultarModal}/>
     </div>
   );
 };
