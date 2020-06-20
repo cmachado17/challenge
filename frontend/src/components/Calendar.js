@@ -5,32 +5,37 @@ import "react-big-calendar/lib/css/react-big-calendar.css";
 
 const localizer = momentLocalizer(moment);
 
-const Calendario = (props) => {
+const Calendario = () => {
 
 const [eventos, setEventos] = useState([]);
 
 useEffect(() =>{
   const cargarEventos = async() =>{
     try{
-      const respuesta = await fetch('http://localhost:5000/')
-      .then(response => response.json())
-      .then(data => {
-        console.log(data);
-      })
-    }catch(e){
+      const respuesta = await fetch('http://localhost:5000/');
+      const events = await respuesta.json();
+      console.log(events);
+      setEventos(events);
+      }
+    catch(e){
       alert(e);
     }
   }
   cargarEventos();
-}, [eventos])
+}, [])
 
-  const myEventsList = [1, 2, 3, 4];
   return (
     <div className="container">
       <Calendar
       views={['month', 'week']}
         localizer={localizer}
-        events={myEventsList}
+        events={eventos.map(evento =>(
+          {
+            title: evento.title,
+            start: moment(evento.start).toDate(),
+            end: moment(evento.end).toDate()
+          }
+        ))}
         startAccessor="start"
         endAccessor="end"
         style={{ height: 500 }}
