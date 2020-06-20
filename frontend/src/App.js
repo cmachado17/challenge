@@ -1,12 +1,16 @@
 import React from "react";
 import Calendario from "./components/Calendar";
+import Evento from "./components/Evento";
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 
 function App() {
   return (
-    <div className="App">
-      <h1>Challenge Alkemy</h1>
-      <Calendario />
-    </div>
+    <Router>
+      <Switch>
+        <Route exact path="/" children={<Calendario />} />
+        <Route exact path="/evento" children={<Evento />} />
+      </Switch>
+    </Router>
   );
 }
 

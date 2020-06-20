@@ -19,6 +19,7 @@ let eventos = [
     start: "2020-06-19T21:00",
     end: "2020-06-19T22:00",
   },
+
 ];
 
 const getEvents = async (req, res) => {
