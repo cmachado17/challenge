@@ -26,24 +26,25 @@ const Calendario = () => {
 
 
   //Peticion para la carga de eventos
-  useEffect(() => {
     const cargarEventos = async () => {
       try {
         const respuesta = await fetch("http://localhost:5000/get-events");
         const events = await respuesta.json();
         setEventos(events);
       } catch (e) {
-        alert('asd');
+        alert(e);
       }
     };
-    cargarEventos();
-  }, []);
+
+  useEffect(cargarEventos, []);
+
 
   return (
     <div className="container">
       <Button onClick={handleMostrarModal}>Nuevo evento</Button>
       <Calendar
-        views={["month", "week"]}
+        views={["week", "month"]}
+        defaultView='week'
         localizer={localizer}
         //pasar las fechas a objeto Date para formato necesario de react-big-calendar
         events={eventos.map((evento) => ({
@@ -62,7 +63,7 @@ const Calendario = () => {
           week: "Semanal",
         }}
       />
-    <ModalEvento show={mostrarModal} handleOcultarModal={handleOcultarModal}/>
+    <ModalEvento show={mostrarModal} handleOcultarModal={handleOcultarModal} cargarEventos={cargarEventos}/>
     </div>
   );
 };

@@ -28,14 +28,17 @@ const getEvents = async (req, res) => {
 const newEvent = async (req, res) => {
 console.log(req.body)
   try {
-    const { title, start, end } = req.body;
+    const { titulo, inicio, final } = req.body;
     const eventInsert = {
-      title: title,
-      start: start,
-      end: end,
+      title: titulo,
+      start: inicio,
+      end: final,
     };
     eventos.push(eventInsert);
-    res.send(eventos);
+    res.send({
+        status: "ok",
+        message: "Evento creado satisfactoriamente"
+    });
   } catch (e) {
     console.log(e);
   }
