@@ -8,7 +8,7 @@ import { Link } from "react-router-dom";
 
 const localizer = momentLocalizer(moment);
 
-const Calendario = () => {
+const Calendario = (props) => {
   //Estado eventos
   const [eventos, setEventos] = useState([]);
 
@@ -35,19 +35,27 @@ const Calendario = () => {
     }
   };
 
-  useEffect(() =>{
-    cargarEventos()}, []);
+  useEffect(() => {
+    cargarEventos();
+  }, []);
+
+
 
   const CustomEvent = (event) => {
-    console.log(event.event.start);
+
     return (
       <div>
-        <Link to="/evento">
+        <Link
+          to={`/evento/${event.event.id}`}
+          
+        >
           {event.event.title}
         </Link>
       </div>
     );
   };
+
+ 
 
   let formats = {
     weekDayFormat: null,
@@ -64,10 +72,11 @@ const Calendario = () => {
           event: CustomEvent,
         }}
         views={["week", "month"]}
-        defaultView="week"
+        defaultView="month"
         localizer={localizer}
         //pasar las fechas a objeto Date para formato necesario de react-big-calendar
         events={eventos.map((evento) => ({
+          id: evento.id,
           title: evento.title,
           start: moment(evento.start).toDate(),
           end: moment(evento.end).toDate(),

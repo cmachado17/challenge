@@ -24,6 +24,7 @@ let eventos = [
     end: "2020-06-19T22:00",
   },
 ];
+var id=5;
 //traer todos los eventos
 const getEvents = async (req, res) => {
   await res.send(eventos);
@@ -50,6 +51,7 @@ const newEvent = async (req, res) => {
       title: titulo,
       start: inicio,
       end: final,
+      id: id++
     };
     eventos.push(eventInsert);
     res.send({

@@ -1,14 +1,27 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import Button from "react-bootstrap/Button";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
-import Accordion from 'react-bootstrap/Accordion';
-import Card from 'react-bootstrap/Card';
+import Accordion from "react-bootstrap/Accordion";
+import Card from "react-bootstrap/Card";
+import { useParams } from "react-router-dom";
 
 const Evento = () => {
+  let { id } = useParams();
+  let url = "http://localhost:5000/evento/";
+  const [evento, setEvento] = useState({});
+
+  useEffect(() => {
+    fetch(url + id)
+      .then((response) => response.json())
+      .then((data) => {
+        setEvento(data);
+      });
+  }, []);
+
   return (
     <div className="container">
-      <h2>Titulo evento</h2>
+      <h2>{evento.title}</h2>
 
       <Row className="pl-3 py-3 bg-light">
         <Button variant="success mx-2">Editar</Button>
