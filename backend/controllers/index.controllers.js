@@ -24,7 +24,7 @@ let eventos = [
     end: "2020-06-19T22:00",
   },
 ];
-var id=5;
+var id = 5;
 //traer todos los eventos
 const getEvents = async (req, res) => {
   await res.send(eventos);
@@ -51,7 +51,7 @@ const newEvent = async (req, res) => {
       title: titulo,
       start: inicio,
       end: final,
-      id: id++
+      id: id++,
     };
     eventos.push(eventInsert);
     res.send({
@@ -63,24 +63,32 @@ const newEvent = async (req, res) => {
   }
 };
 
-//   const newEvent = async () => {
-//     try {
-//       router.post("/", (req, res) => {
-//         let eventInsert = {
-//           title: req.body.title,
-//           start: req.body.start,
-//           end: req.body.end,
-//         };
-//         eventos.push(eventInsert);
-//         res.send(eventos);
-//       });
-//     } catch (e) {
-//       console.log(e);
-//     }
-//   };
+//borrar evento
+const deleteEvent = async (req, res) => {
+  try {
+    let event;
+    eventos.map((evento) => {
+      if (evento.id == req.params.id) {
+        event = evento;
+      }
+    });
+    const removeItem = (array, item) => {
+      let i = array.indexOf(item);
+      if (i !== -1) {
+        array.splice(i, 1);
+      }
+    };
+    removeItem(eventos, event);
+    res.send(eventos);
+  } catch (e) {
+    console.log(e);
+    res.send('error')
+  }
+};
 
 module.exports = {
   getEvents,
   getEvent,
   newEvent,
+  deleteEvent,
 };
