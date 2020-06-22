@@ -15,6 +15,9 @@ const Calendario = (props) => {
   //Estados Modal
   const [mostrarModal, setMostrarModal] = useState(false);
 
+  //admin
+  const [admin, setAdmin] = useState(true);
+
   //Mostrar Modal
   const handleMostrarModal = (e) => {
     setMostrarModal(true);
@@ -35,27 +38,46 @@ const Calendario = (props) => {
     }
   };
 
+  //Borrar evento
+  const borrarEvento = async(id) => {
+    try {
+      fetch(`http://localhost:5000/delete-event/${id}`, {
+        method: 'DELETE',
+        credentials: 'include'
+      }).then(response => response.json())
+      .then(data =>{
+        if(data.status === 'ok'){
+          alert(data.message);
+          cargarEventos();
+        }else{
+          alert(data.message);
+        }
+      })
+  
+    
+
+    } catch (e) {}
+  };
+
   useEffect(() => {
     cargarEventos();
   }, []);
 
-
-
   const CustomEvent = (event) => {
-
     return (
       <div>
-        <Link
-          to={`/evento/${event.event.id}`}
-          
-        >
-          {event.event.title}
-        </Link>
+        <Link to={`/evento/${event.event.id}`}>{event.event.title}</Link>
+        {admin && (
+          <button
+            className="bg-danger"
+            onClick={() => borrarEvento(event.event.id)}
+          >
+            X
+          </button>
+        )}
       </div>
     );
   };
-
- 
 
   let formats = {
     weekDayFormat: null,

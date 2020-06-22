@@ -2,26 +2,26 @@ let eventos = [
   {
     id: 1,
     title: "Webinar JS",
-    start: "2020-06-19T21:00",
-    end: "2020-06-19T22:00",
+    start: "2020-06-22T21:00",
+    end: "2020-06-22T22:00",
   },
   {
     id: 2,
     title: "Webinar Python",
-    start: "2020-06-15T15:00",
-    end: "2020-06-15T18:00",
+    start: "2020-06-24T15:00",
+    end: "2020-06-24T18:00",
   },
   {
     id: 3,
     title: "React Workshop",
-    start: "2020-06-20T12:00",
-    end: "2020-06-20T15:00",
+    start: "2020-06-26T12:00",
+    end: "2020-06-26T15:00",
   },
   {
     id: 4,
     title: "Angular Workshop",
-    start: "2020-06-19T21:00",
-    end: "2020-06-19T22:00",
+    start: "2020-06-22T21:00",
+    end: "2020-06-22T22:00",
   },
 ];
 var id = 5;
@@ -79,10 +79,16 @@ const deleteEvent = async (req, res) => {
       }
     };
     removeItem(eventos, event);
-    res.send(eventos);
+    res.json({
+      status: "ok",
+      message: "Evento borrado",
+    });
   } catch (e) {
     console.log(e);
-    res.send('error')
+    res.json({
+      status: "error",
+      message: "Error al eliminar la publicación",
+    });
   }
 };
 
