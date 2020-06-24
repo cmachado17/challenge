@@ -1,3 +1,5 @@
+const cnn = require("../src/connection");
+
 let eventos = [
   {
     id: 1,
@@ -27,7 +29,10 @@ let eventos = [
 var id = 5;
 //traer todos los eventos
 const getEvents = async (req, res) => {
-  await res.send(eventos);
+  let sql = "SELECT * FROM eventos";
+  cnn.query(sql, (err, result, fields) => {
+    res.json(result);
+  });
 };
 
 //traer evento especifico
@@ -42,21 +47,23 @@ const getEvent = (req, res) => {
     console.log(e);
   }
 };
+
 //crear nuevo evento
 const newEvent = async (req, res) => {
-  console.log(req.body);
+  const { titulo, inicio, final } = req.body;
+
+  let sqlInsert =
+    "INSERT INTO eventos (title_evento, start_evento, end_evento) VALUES (?,?,?)";
+
+  values = [titulo, inicio, final];
   try {
-    const { titulo, inicio, final } = req.body;
-    const eventInsert = {
-      title: titulo,
-      start: inicio,
-      end: final,
-      id: id++,
-    };
-    eventos.push(eventInsert);
-    res.send({
-      status: "ok",
-      message: "Evento creado satisfactoriamente",
+    cnn.query(sqlInsert, values, (err, result, fields) => {
+      if (err) throw err;
+
+      res.send({
+        status: "ok",
+        message: "Evento creado satisfactoriamente",
+      });
     });
   } catch (e) {
     console.log(e);
@@ -65,23 +72,15 @@ const newEvent = async (req, res) => {
 
 //borrar evento
 const deleteEvent = async (req, res) => {
+  let sqlDelete = `DELETE FROM eventos WHERE id_evento = ${req.params.id}`;
   try {
-    let event;
-    eventos.map((evento) => {
-      if (evento.id == req.params.id) {
-        event = evento;
-      }
-    });
-    const removeItem = (array, item) => {
-      let i = array.indexOf(item);
-      if (i !== -1) {
-        array.splice(i, 1);
-      }
-    };
-    removeItem(eventos, event);
-    res.json({
-      status: "ok",
-      message: "Evento borrado",
+    cnn.query(sqlDelete, (err, result, fields) => {
+      if(err) throw err;
+      res.json({
+        status: "ok",
+        message: "Evento borrado",
+      });
+
     });
   } catch (e) {
     console.log(e);

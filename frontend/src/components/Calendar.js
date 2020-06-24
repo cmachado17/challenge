@@ -98,10 +98,10 @@ const Calendario = (props) => {
         localizer={localizer}
         //pasar las fechas a objeto Date para formato necesario de react-big-calendar
         events={eventos.map((evento) => ({
-          id: evento.id,
-          title: evento.title,
-          start: moment(evento.start).toDate(),
-          end: moment(evento.end).toDate(),
+          id: evento.id_evento,
+          title: evento.title_evento,
+          start: moment(evento.start_evento).toDate(),
+          end: moment(evento.end_evento).toDate(),
         }))}
         startAccessor="start"
         endAccessor="end"

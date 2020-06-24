@@ -25,8 +25,6 @@ const Evento = () => {
 
       <Row className="pl-3 py-3 bg-light">
         <Button variant="success mx-2">Editar</Button>
-
-        <Button variant="danger mx-2">Eliminar</Button>
       </Row>
 
       <Row className="pl-3 my-3">

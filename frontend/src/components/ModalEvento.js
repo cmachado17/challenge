@@ -39,8 +39,7 @@ const ModalEvento = (props) => {
 
     let start = inicio + "T" + horaInicio;
     let end = inicio + "T" + horaFinal;
-    console.log("start" + typeof start);
-    console.log("end" + typeof end);
+
     formData.append("titulo", titulo);
     formData.append("inicio", start);
     formData.append("final", end);
