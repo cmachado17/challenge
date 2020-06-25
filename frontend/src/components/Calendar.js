@@ -94,7 +94,7 @@ const Calendario = (props) => {
           event: CustomEvent,
         }}
         views={["week", "month"]}
-        defaultView="month"
+        defaultView="week"
         localizer={localizer}
         //pasar las fechas a objeto Date para formato necesario de react-big-calendar
         events={eventos.map((evento) => ({
