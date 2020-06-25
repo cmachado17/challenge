@@ -5,26 +5,53 @@ import Col from "react-bootstrap/Col";
 import Accordion from "react-bootstrap/Accordion";
 import Card from "react-bootstrap/Card";
 import { useParams } from "react-router-dom";
+import ModalEvento from "./ModalEvento";
 
 const Evento = () => {
+  const [evento, setEvento] = useState({});
+  //Estados Modal
+  const [mostrarModal, setMostrarModal] = useState(false);
+  //estado evento para editar
+  const [selectedEvento, setSelectedEvento] = useState(null);
+
   let { id } = useParams();
   let url = "http://localhost:5000/evento/";
-  const [evento, setEvento] = useState({});
+  //Mostrar Modal
+  const handleMostrarModal = (e) => {
+    setMostrarModal(true);
+  };
+  //Ocultar Modal
+  const handleOcultarModal = (e) => {
+    setMostrarModal(false);
+  };
+  //pasarle al modal los datos del evento para editar
+  const handleEditEvent = (idEvento) => {
+    setSelectedEvento(idEvento);
+    handleMostrarModal();
+ 
+  };
 
-  useEffect(() => {
+  const cargarEvento = () => {
     fetch(url + id)
       .then((response) => response.json())
       .then((data) => {
-        setEvento(data);
+        setEvento(data[0]);
       });
-  }, []);
+  };
+
+  useEffect(cargarEvento, []);
 
   return (
     <div className="container">
-      <h2>{evento.title}</h2>
+      <h2>{evento.title_evento}</h2>
 
       <Row className="pl-3 py-3 bg-light">
-        <Button variant="success mx-2">Editar</Button>
+        <Button
+          variant="success mx-2"
+          onClick={() => handleEditEvent(evento.id_evento)}
+        >
+          Editar
+        </Button>
       </Row>
 
       <Row className="pl-3 my-3">
@@ -70,6 +97,13 @@ const Evento = () => {
           </Accordion>
         </Col>
       </Row>
+      <ModalEvento
+        type="editar"
+        show={mostrarModal}
+        handleOcultarModal={handleOcultarModal}
+        selectedEvento={selectedEvento}
+        cargarEvento={cargarEvento}
+      />
     </div>
   );
 };

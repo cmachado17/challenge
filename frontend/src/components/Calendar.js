@@ -116,6 +116,7 @@ const Calendario = (props) => {
         formats={formats}
       />
       <ModalEvento
+      type="nuevo"
         show={mostrarModal}
         handleOcultarModal={handleOcultarModal}
         cargarEventos={cargarEventos}

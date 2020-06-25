@@ -1,34 +1,7 @@
 const cnn = require("../src/connection");
 
-let eventos = [
-  {
-    id: 1,
-    title: "Webinar JS",
-    start: "2020-06-22T21:00",
-    end: "2020-06-22T22:00",
-  },
-  {
-    id: 2,
-    title: "Webinar Python",
-    start: "2020-06-24T15:00",
-    end: "2020-06-24T18:00",
-  },
-  {
-    id: 3,
-    title: "React Workshop",
-    start: "2020-06-26T12:00",
-    end: "2020-06-26T15:00",
-  },
-  {
-    id: 4,
-    title: "Angular Workshop",
-    start: "2020-06-22T21:00",
-    end: "2020-06-22T22:00",
-  },
-];
-var id = 5;
 //traer todos los eventos
-const getEvents = async (req, res) => {
+const getEvents = (req, res) => {
   let sql = "SELECT * FROM eventos";
   cnn.query(sql, (err, result, fields) => {
     res.json(result);
@@ -37,11 +10,11 @@ const getEvents = async (req, res) => {
 
 //traer evento especifico
 const getEvent = (req, res) => {
+  let sql = `SELECT * FROM eventos WHERE id_evento = ${req.params.id}`;
   try {
-    eventos.map((evento) => {
-      if (evento.id == req.params.id) {
-        res.send(evento);
-      }
+    cnn.query(sql, (err, result, fields) => {
+      if (err) throw err;
+      res.json(result);
     });
   } catch (e) {
     console.log(e);
@@ -49,7 +22,7 @@ const getEvent = (req, res) => {
 };
 
 //crear nuevo evento
-const newEvent = async (req, res) => {
+const newEvent = (req, res) => {
   const { titulo, inicio, final } = req.body;
 
   let sqlInsert =
@@ -71,16 +44,15 @@ const newEvent = async (req, res) => {
 };
 
 //borrar evento
-const deleteEvent = async (req, res) => {
+const deleteEvent = (req, res) => {
   let sqlDelete = `DELETE FROM eventos WHERE id_evento = ${req.params.id}`;
   try {
     cnn.query(sqlDelete, (err, result, fields) => {
-      if(err) throw err;
+      if (err) throw err;
       res.json({
         status: "ok",
         message: "Evento borrado",
       });
-
     });
   } catch (e) {
     console.log(e);
@@ -91,9 +63,39 @@ const deleteEvent = async (req, res) => {
   }
 };
 
+//modificar evento
+
+const modifyEvent = (req, res) => {
+
+  console.log(req.body)
+
+  const { titulo, inicio, final } = req.body;
+
+  let sqlEdit = `UPDATE eventos SET title_evento = ?, start_evento = ?, end_evento = ? WHERE id_evento = ${req.params.id}`;
+
+  values = [titulo, inicio, final];
+
+  try {
+    cnn.query(sqlEdit, values, (err, result, fields) => {
+      if (err) throw err;
+      res.json({
+        status: "ok",
+        message: "Evento modificado correctamente",
+      });
+    });
+  } catch (e) {
+    console.log(e);
+    res.json({
+      status: "error",
+      message: "Error al modificar el evento",
+    });
+  }
+};
+
 module.exports = {
   getEvents,
   getEvent,
   newEvent,
   deleteEvent,
+  modifyEvent,
 };
